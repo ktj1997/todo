@@ -2,6 +2,7 @@ package com.example.myproject.controller;
 
 import com.example.myproject.model.dto.request.comment.CommentRequestDto;
 import com.example.myproject.service.comment.CommentService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,22 +13,19 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    /*
-        댓글 작성
-     */
+    @ApiOperation("댓글작성")
     @PostMapping
-    public void createComment(@PathVariable Long memoId, @RequestBody CommentRequestDto commentRequestDto) {
-        commentService.createComment(commentRequestDto);
+    public void createComment(@PathVariable Long postId, @RequestBody CommentRequestDto commentRequestDto) {
+        commentService.createComment(postId, commentRequestDto);
     }
 
-    /*
-        대댓글 작성
-     */
+    @ApiOperation("대 댓글 작성")
     @PostMapping("/comment/{commentId}")
     public void createReComment(@PathVariable Long memoId, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
         commentService.createReComment(memoId, commentId, commentRequestDto);
     }
 
+    @ApiOperation("댓글 수정")
     @PutMapping("/{commentId}")
     public void updateComment(@PathVariable Long memoId, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
 

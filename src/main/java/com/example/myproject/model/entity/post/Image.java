@@ -1,4 +1,4 @@
-package com.example.myproject.model.entity.memo;
+package com.example.myproject.model.entity.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,10 +24,10 @@ public class Image {
     String URL;
 
     @ManyToOne
-    Memo memo;
+    Post post;
 
-    public Image(String URL, Memo memo) {
+    public Image(String URL, Post post) {
         this.URL = URL;
-        this.memo = memo;
+        this.post = post;
     }
 }

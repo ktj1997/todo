@@ -22,9 +22,9 @@ public class GlobalExceptionHandler {
         return new ExceptionResponse(HttpStatus.BAD_REQUEST, e);
     }
 
-    @ExceptionHandler(value = MemoNotExistException.class)
+    @ExceptionHandler(value = PostNotExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionResponse memoNotExistException(MemoNotExistException e) {
+    public ExceptionResponse memoNotExistException(PostNotExistException e) {
         return new ExceptionResponse(HttpStatus.NOT_FOUND, e);
     }
 

@@ -1,6 +1,6 @@
-package com.example.myproject.repository.memo;
+package com.example.myproject.repository.post;
 
-import com.example.myproject.model.entity.memo.Image;
+import com.example.myproject.model.entity.post.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

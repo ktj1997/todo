@@ -1,6 +1,6 @@
-package com.example.myproject.model.entity.memo;
+package com.example.myproject.model.entity.post;
 
-import com.example.myproject.model.dto.request.memo.MemoRequestDto;
+import com.example.myproject.model.dto.request.post.PostRequestDto;
 import com.example.myproject.model.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Data
-public class Memo {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Memo {
     private int commentNum = 0;
 
     @Enumerated(EnumType.STRING)
-    private MemoType type;
+    private PostType type;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
@@ -35,11 +35,11 @@ public class Memo {
     @ManyToOne
     User user;
 
-    @OneToMany(mappedBy = "memo",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
     List<Image> imageURL;
 
     @Builder
-    public Memo(String title, String content, List<Image> imageUrl, MemoType type, User user) {
+    public Post(String title, String content, List<Image> imageUrl, PostType type, User user) {
         this.title = title;
         this.content = content;
         this.imageURL = imageUrl;
@@ -47,10 +47,10 @@ public class Memo {
         this.user = user;
     }
 
-    public void updateMemo(MemoRequestDto memoRequestDto)
+    public void updateMemo(PostRequestDto postRequestDto)
     {
-        this.title = memoRequestDto.getTitle();
-        this.type = memoRequestDto.getType();
-        this.content = memoRequestDto.getContent();
+        this.title = postRequestDto.getTitle();
+        this.type = postRequestDto.getType();
+        this.content = postRequestDto.getContent();
     }
 }

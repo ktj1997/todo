@@ -1,7 +1,7 @@
 package com.example.myproject.model.entity.comment;
 
 import com.example.myproject.model.dto.request.comment.CommentRequestDto;
-import com.example.myproject.model.entity.memo.Memo;
+import com.example.myproject.model.entity.post.Post;
 import com.example.myproject.model.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
@@ -33,17 +33,17 @@ public class Comment {
     Comment parentComment;
 
     @ManyToOne
-    Memo memo;
+    Post post;
 
     @ManyToOne
     User user;
 
     @Builder
-    public Comment(String content, Comment parentComment, Long groupNum, Memo memo, User user) {
+    public Comment(String content, Comment parentComment, Long groupNum, Post post, User user) {
         this.content = content;
         this.parentComment = parentComment;
         this.groupNum = groupNum;
-        this.memo = memo;
+        this.post = post;
         this.user = user;
     }
 
