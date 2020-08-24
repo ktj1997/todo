@@ -31,13 +31,12 @@ public class EmailAuthFunction {
     private final JavaMailSender javaMailSender;
     private final UserRepository userRepository;
 
-    public void mailSend() {
+    public void mailSend(User user) {
         SimpleMailMessage message = new SimpleMailMessage();
-        User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotExistException::new);
         String token = createToken(user.getUsername());
 
-        message.setTo(MailSender);
-        message.setFrom(user.getEmail());
+        message.setTo(user.getEmail());
+        message.setFrom(MailSender);
         message.setSubject(emailAuthDto.getTitle());
         message.setText(emailAuthDto.makeText(user.getUsername(), BaseURL + token));
 

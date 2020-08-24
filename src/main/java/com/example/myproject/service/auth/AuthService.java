@@ -49,11 +49,12 @@ public class AuthService {
 
     @Transactional
     public void sendMail() {
+        System.out.println("Send Mail");
         User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotExistException::new);
         if (user.getIsAuthenticate())
             throw new AlreadyAuthenticatedException();
 
-        emailAuthFunction.mailSend();
+        emailAuthFunction.mailSend(user);
     }
 
     @Transactional
