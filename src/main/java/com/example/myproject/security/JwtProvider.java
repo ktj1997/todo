@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -25,10 +24,10 @@ public class JwtProvider {
     @Value(value = "${myproject.jwt.serect}")
     private String secretKey;
 
-    private Long tokenValidTime = 30 * 60 * 1000L;
+    private Long tokenValidTime = 30 * 24 * 60 * 60 * 1000L; //일단 30일 -->추후에 RefreshToken 구현시에 손볼 것.
 
 
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailService userDetailsService;
 
     @PostConstruct
     protected void init() {
@@ -69,16 +68,15 @@ public class JwtProvider {
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("X-AUTH-TOKEN");
     }
+
     /*
         토큰의 유효성 검사
      */
-    public boolean validateToken(String token)
-    {
-        try{
+    public boolean validateToken(String token) {
+        try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date()); //서버에서 정상 발행 된 것 인증 + 만료되지않음 == 통과
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
     }

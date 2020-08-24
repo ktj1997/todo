@@ -57,4 +57,16 @@ public class GlobalExceptionHandler {
     public ExceptionResponse AccessDeniedException(AccessDeniedException e) {
         return new ExceptionResponse(HttpStatus.UNAUTHORIZED, e);
     }
+
+    @ExceptionHandler(value = AlreadyAuthenticatedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse AlreadyAuthenticatedException(AlreadyAuthenticatedException e) {
+        return new ExceptionResponse(HttpStatus.BAD_REQUEST, e);
+    }
+
+    @ExceptionHandler(value = AuthenticateFailedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse AuthenticateFailedException(AuthenticateFailedException e) {
+        return new ExceptionResponse(HttpStatus.BAD_REQUEST, e);
+    }
 }

@@ -4,10 +4,8 @@ import com.example.myproject.model.dto.request.user.LoginRequestDto;
 import com.example.myproject.model.dto.request.user.SignUpRequestDto;
 import com.example.myproject.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @RestController
@@ -23,8 +21,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequestDto loginRequestDto)
-    {
+    public String login(@RequestBody LoginRequestDto loginRequestDto) {
         return authService.login(loginRequestDto);
     }
+
+    @GetMapping("/validate")
+    public void validateMail(@RequestParam String token) {
+        authService.mailAuthenticate(token);
+    }
+
 }

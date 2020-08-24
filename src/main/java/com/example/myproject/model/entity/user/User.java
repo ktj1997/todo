@@ -1,9 +1,6 @@
 package com.example.myproject.model.entity.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,11 +27,15 @@ public class User implements UserDetails {
 
     private String Email;
 
+    @Setter
+    private Boolean isAuthenticate = false;
+
+    @Setter
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<String>();
 
     @Builder
-    public User(String userName, String password,List<String> roles,String Email) {
+    public User(String userName, String password, List<String> roles, String Email) {
         this.userName = userName;
         this.password = password;
         this.roles = roles;

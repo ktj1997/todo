@@ -27,6 +27,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.5'
     implementation 'net.minidev:json-smart:2.3'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
