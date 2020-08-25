@@ -1,6 +1,5 @@
 package com.example.myproject.service.auth;
 
-import com.example.myproject.exception.UserNotExistException;
 import com.example.myproject.model.dto.request.user.EmailAuthDto;
 import com.example.myproject.model.entity.user.User;
 import com.example.myproject.repository.user.UserRepository;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
