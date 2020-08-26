@@ -34,8 +34,8 @@ public class PostService {
     private final StoreImgFunction storeImgFunction;
 
     @Transactional
-    public PostDetailDto getPost(long memoId) {
-        return new PostDetailDto(postRepository.findMemoDetailById(memoId)
+    public PostDetailDto getPost(long postId) {
+        return new PostDetailDto(postRepository.findById(postId)
                 .orElseThrow(PostNotExistException::new));
     }
 
