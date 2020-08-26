@@ -41,7 +41,7 @@ public class EmailAuthFunction {
         javaMailSender.send(message);
     }
 
-    private String createToken(String userId) {
+    public String createToken(String userId) {
         Claims claims = Jwts.claims().setSubject(userId); //jwt payload에 저장 할 것
         Date now = new Date();
 
@@ -58,6 +58,7 @@ public class EmailAuthFunction {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date()); //서버에서 정상 발행 된 것 인증 + 만료되지않음 == 통과
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }

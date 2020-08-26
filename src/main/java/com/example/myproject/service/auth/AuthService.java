@@ -49,7 +49,6 @@ public class AuthService {
 
     @Transactional
     public void sendMail() {
-        System.out.println("Send Mail");
         User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotExistException::new);
         if (user.getIsAuthenticate())
             throw new AlreadyAuthenticatedException();
@@ -63,8 +62,8 @@ public class AuthService {
             User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotExistException::new);
             user.setIsAuthenticate(true);
             user.setRoles(Collections.singletonList(UserAuthority.ROLE_USER.toString()));
-        }
-        throw new AuthenticateFailedException();
+        } else
+            throw new AuthenticateFailedException();
     }
 
 }
