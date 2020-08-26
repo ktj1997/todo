@@ -80,12 +80,14 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long postId, Long commentId) {
+        Post post = postRepository.findById(postId).orElseThrow(PostNotExistException::new);
         Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotExistException::new);
         User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotExistException::new);
 
         if (comment.getUser() != user)
             throw new AccessDeniedException();
         comment.deleteComment();
+        post.setCommentNum(post.getCommentNum() - 1);
     }
 }

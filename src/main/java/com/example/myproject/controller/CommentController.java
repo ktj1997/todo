@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/memo/{memoId}")
+@RequestMapping("/post/{postId}")
 public class CommentController {
 
     private final CommentService commentService;
@@ -21,13 +21,19 @@ public class CommentController {
 
     @ApiOperation("대 댓글 작성")
     @PostMapping("/comment/{commentId}")
-    public void createReComment(@PathVariable Long memoId, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
-        commentService.createReComment(memoId, commentId, commentRequestDto);
+    public void createReComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
+        commentService.createReComment(postId, commentId, commentRequestDto);
     }
 
     @ApiOperation("댓글 수정")
     @PutMapping("/{commentId}")
-    public void updateComment(@PathVariable Long memoId, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
+    public void updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
+        commentService.updateComment(commentId, commentRequestDto);
+    }
 
+    @ApiOperation("댓글 삭제")
+    @DeleteMapping("/{commentId}")
+    public void deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
+        commentService.deleteComment(postId, commentId);
     }
 }
