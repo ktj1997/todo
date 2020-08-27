@@ -2,6 +2,8 @@ package com.example.myproject.controller;
 
 import com.example.myproject.model.dto.request.user.LoginRequestDto;
 import com.example.myproject.model.dto.request.user.SignUpRequestDto;
+import com.example.myproject.model.dto.resonse.user.LoginResponseDto;
+import com.example.myproject.model.dto.resonse.user.RefreshTokenDto;
 import com.example.myproject.service.auth.AuthService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +26,18 @@ public class AuthController {
 
     @ApiOperation("로그인")
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequestDto loginRequestDto) {
+    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
         return authService.login(loginRequestDto);
     }
 
+    @ApiOperation("AccessToken 재발급")
+    @PostMapping("/refreshToken")
+    public String refreshAccessToken(@RequestBody RefreshTokenDto refreshTokenDto) {
+        return authService.refreshAccessToken(refreshTokenDto);
+    }
+
     @ApiOperation("이메일 인증 유효성 검사")
-    @GetMapping("/validate")
+    @GetMapping("/mail/validate")
     public void validateMail(@RequestParam String token) {
         authService.mailAuthenticate(token);
     }

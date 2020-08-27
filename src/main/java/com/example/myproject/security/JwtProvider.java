@@ -24,8 +24,8 @@ public class JwtProvider {
     @Value(value = "${myproject.jwt.serect}")
     private String secretKey;
 
-    private Long tokenValidTime = 30 * 24 * 60 * 60 * 1000L; //일단 30일 -->추후에 RefreshToken 구현시에 손볼 것.
-
+    private Long accessTokenValidTime = 30 * 60 * 1000L; //유효기간 30초
+    private Long refreshTokenValidTime = 30 * 24 * 60 * 60 * 1000L; //유효기간 30일
 
     private final CustomUserDetailService userDetailsService;
 
@@ -34,7 +34,7 @@ public class JwtProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String userId, List<String> roles) {
+    public String generateToken(String userId, List<String> roles, Long tokenValidTime) {
         Claims claims = Jwts.claims().setSubject(userId); //jwt payload에 저장 할 것
         claims.put("roles", roles);
         Date now = new Date();
@@ -45,6 +45,14 @@ public class JwtProvider {
                 .setExpiration(new Date(now.getTime() + tokenValidTime))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+    }
+
+    public String createAccessToken(String userId, List<String> roles) {
+        return generateToken(userId, roles, accessTokenValidTime);
+    }
+
+    public String createRefreshToken(String userId, List<String> roles) {
+        return generateToken(userId, roles, refreshTokenValidTime);
     }
 
     /*
@@ -79,6 +87,10 @@ public class JwtProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public List<String> getAuthorities(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("roles", List.class);
     }
 
 }

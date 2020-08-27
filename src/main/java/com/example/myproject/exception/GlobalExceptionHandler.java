@@ -69,4 +69,10 @@ public class GlobalExceptionHandler {
     public ExceptionResponse AuthenticateFailedException(AuthenticateFailedException e) {
         return new ExceptionResponse(HttpStatus.BAD_REQUEST, e);
     }
+
+    @ExceptionHandler(value = RefreshTokenInvalidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse RefreshTokenInvalidException(RefreshTokenInvalidException e) {
+        return new ExceptionResponse(HttpStatus.BAD_REQUEST, e);
+    }
 }

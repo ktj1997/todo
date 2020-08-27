@@ -3,6 +3,8 @@ package com.example.myproject.service.auth;
 import com.example.myproject.exception.*;
 import com.example.myproject.model.dto.request.user.LoginRequestDto;
 import com.example.myproject.model.dto.request.user.SignUpRequestDto;
+import com.example.myproject.model.dto.resonse.user.LoginResponseDto;
+import com.example.myproject.model.dto.resonse.user.RefreshTokenDto;
 import com.example.myproject.model.entity.user.User;
 import com.example.myproject.model.entity.user.UserAuthority;
 import com.example.myproject.repository.user.UserRepository;
@@ -37,14 +39,25 @@ public class AuthService {
     }
 
     @Transactional
-    public String login(LoginRequestDto loginRequestDto) {
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         User user = userRepository.findByUserName(loginRequestDto.getUserName()).orElseThrow(UserNotExistException::new);
 
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) //비밀번호가 같지 않을 때
             throw new InvalidUserInfoException();
 
-        return jwtProvider.createToken(user.getUsername(), user.getRoles());
+        return LoginResponseDto.builder()
+                .accessToken(jwtProvider.createAccessToken(user.getUsername(), user.getRoles()))
+                .refreshToken(jwtProvider.createRefreshToken(user.getUsername(), user.getRoles()))
+                .build();
 
+    }
+
+    @Transactional
+    public String refreshAccessToken(RefreshTokenDto refreshTokenDto) {
+        if (jwtProvider.validateToken(refreshTokenDto.getRefreshToken()))
+            return jwtProvider.createAccessToken(jwtProvider.getUserId(refreshTokenDto.getRefreshToken()), jwtProvider.getAuthorities(refreshTokenDto.getRefreshToken()));
+
+        throw new RefreshTokenInvalidException();
     }
 
     @Transactional
@@ -59,7 +72,7 @@ public class AuthService {
     @Transactional
     public void mailAuthenticate(String token) {
         if (emailAuthFunction.validateToken(token)) {
-            User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotExistException::new);
+            User user = userRepository.findByUserName(jwtProvider.getUserId(token)).orElseThrow(UserNotExistException::new);
             user.setIsAuthenticate(true);
             user.setRoles(Collections.singletonList(UserAuthority.ROLE_USER.toString()));
         } else
