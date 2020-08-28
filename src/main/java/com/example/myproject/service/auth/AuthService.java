@@ -13,8 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Collections;
 
 @Service
@@ -38,7 +38,7 @@ public class AuthService {
                 .Email(signUpRequestDto.getEmail()).build());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         User user = userRepository.findByUserName(loginRequestDto.getUserName()).orElseThrow(UserNotExistException::new);
 
@@ -49,7 +49,6 @@ public class AuthService {
                 .accessToken(jwtProvider.createAccessToken(user.getUsername(), user.getRoles()))
                 .refreshToken(jwtProvider.createRefreshToken(user.getUsername(), user.getRoles()))
                 .build();
-
     }
 
     @Transactional
@@ -60,7 +59,7 @@ public class AuthService {
         throw new RefreshTokenInvalidException();
     }
 
-    @Transactional
+     @Transactional
     public void sendMail() {
         User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotExistException::new);
         if (user.getIsAuthenticate())
@@ -78,5 +77,4 @@ public class AuthService {
         } else
             throw new AuthenticateFailedException();
     }
-
 }

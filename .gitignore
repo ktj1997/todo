@@ -13,6 +13,7 @@ build/
 .settings
 .springBeans
 .sts4-cache
+mylog.txt
 
 ### IntelliJ IDEA ###
 .idea

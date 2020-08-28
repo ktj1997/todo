@@ -16,8 +16,8 @@ import com.example.myproject.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +30,7 @@ public class CommentService {
     private final UserRepository userRepository;
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CommentResponseDto> getComment(Long memoId, int page) {
         Post post = postRepository.findById(memoId).orElseThrow(PostNotExistException::new);
         return commentRepository.findAllByPostOrderByGroupNum(post, new PostPage(page)).stream().map(CommentResponseDto::new).collect(Collectors.toList());

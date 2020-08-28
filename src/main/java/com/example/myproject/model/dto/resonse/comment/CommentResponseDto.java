@@ -1,8 +1,11 @@
 package com.example.myproject.model.dto.resonse.comment;
 
-import com.example.myproject.model.dto.request.comment.CommentRequestDto;
 import com.example.myproject.model.entity.comment.Comment;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Getter
 public class CommentResponseDto {
 
     Long id;

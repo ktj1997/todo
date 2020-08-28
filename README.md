@@ -10,14 +10,13 @@
 
 
 ###구현하고자 하는 것
-1) Refresh 토큰 
-2) 소켓 통신
-3) 동영상 업로드
+1) 소켓 통신
+2) 동영상 스트리밍
 
 ###사용한 기술
 1) SpringBoot
 2) Spring Data Jpa
-3) JWT 
+3) Spring Security 
 4) SMTP
 5) MySQL DataBase
 

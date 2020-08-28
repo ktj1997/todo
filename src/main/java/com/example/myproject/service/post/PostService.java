@@ -17,9 +17,9 @@ import com.example.myproject.service.post.function.StoreImgFunction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +33,7 @@ public class PostService {
     private final ImageRepository imageRepository;
     private final StoreImgFunction storeImgFunction;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PostDetailDto getPost(long postId) {
         return new PostDetailDto(postRepository.findById(postId)
                 .orElseThrow(PostNotExistException::new));
@@ -79,7 +79,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PostSummaryDto> getAllPostSummary(int page) {
         return postRepository.findAllBy(new PostPage(page)).stream().map(it -> new PostSummaryDto(it)).collect(Collectors.toList());
     }

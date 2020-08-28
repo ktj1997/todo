@@ -1,10 +1,13 @@
 package com.example.myproject.controller;
 
 import com.example.myproject.model.dto.request.comment.CommentRequestDto;
+import com.example.myproject.model.dto.resonse.comment.CommentResponseDto;
 import com.example.myproject.service.comment.CommentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,8 +16,14 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @ApiOperation("댓글 가져오기")
+    @GetMapping("/comment")
+    public List<CommentResponseDto> getComments(@PathVariable Long postId, @RequestParam int page) {
+        return commentService.getComment(postId, page);
+    }
+
     @ApiOperation("댓글작성")
-    @PostMapping
+    @PostMapping("/comment")
     public void createComment(@PathVariable Long postId, @RequestBody CommentRequestDto commentRequestDto) {
         commentService.createComment(postId, commentRequestDto);
     }
