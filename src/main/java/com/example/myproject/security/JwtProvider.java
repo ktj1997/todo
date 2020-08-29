@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -59,8 +61,7 @@ public class JwtProvider {
         JWT토큰으로부터 Authentication토큰을 가져오는 작업
      */
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(token));
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "", userDetails.getAuthorities()); //principal,credentials,authorities
+        return new UsernamePasswordAuthenticationToken(getUserId(token), "", getAuthorities(token).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())); //principal,credentials,authorities
     }
 
     /*

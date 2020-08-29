@@ -2,6 +2,7 @@ package com.example.myproject.service.auth;
 
 import com.example.myproject.model.dto.request.user.LoginRequestDto;
 import com.example.myproject.model.dto.request.user.SignUpRequestDto;
+import com.example.myproject.model.dto.resonse.user.LoginResponseDto;
 import com.example.myproject.repository.user.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +52,7 @@ class AuthServiceTest {
         LoginRequestDto loginRequestDto = new LoginRequestDto("Test1234", "password123!");
 
         //then
-        String token = Assertions.assertDoesNotThrow(() -> authService.login(loginRequestDto));
+        LoginResponseDto token = Assertions.assertDoesNotThrow(() -> authService.login(loginRequestDto));
         Assertions.assertNotNull(token);
     }
 

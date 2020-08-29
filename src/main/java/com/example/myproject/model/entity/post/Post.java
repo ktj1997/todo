@@ -5,6 +5,8 @@ import com.example.myproject.model.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -32,7 +34,7 @@ public class Post {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     User user;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)

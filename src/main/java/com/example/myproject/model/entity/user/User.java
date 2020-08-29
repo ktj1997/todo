@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private Boolean isAuthenticate = false;
 
     @Setter
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<String>();
 
     @Builder
@@ -41,7 +41,6 @@ public class User implements UserDetails {
         this.roles = roles;
         this.Email = Email;
     }
-
     /*
         String으로 저장되어있는 권한목록을 GrantedAuthority 객체로 다시 바꿔서 리턴
      */
