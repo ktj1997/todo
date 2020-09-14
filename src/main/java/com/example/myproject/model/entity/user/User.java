@@ -21,10 +21,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
     private String userName;
 
     private String password;
 
+    @Column(nullable = false)
     private String Email;
 
     @Setter
@@ -41,6 +43,7 @@ public class User implements UserDetails {
         this.roles = roles;
         this.Email = Email;
     }
+
     /*
         String으로 저장되어있는 권한목록을 GrantedAuthority 객체로 다시 바꿔서 리턴
      */

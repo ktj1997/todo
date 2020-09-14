@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -24,6 +21,7 @@ public class Image {
     String URL;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     Post post;
 
     public Image(String URL, Post post) {

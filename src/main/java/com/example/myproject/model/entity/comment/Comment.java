@@ -36,9 +36,11 @@ public class Comment {
     Comment parentComment;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     Post post;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     User user;
 
     @Builder

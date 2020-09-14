@@ -20,11 +20,14 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
     @Lob
+    @Column(nullable = false)
     private String content;
 
+    @Setter
     private int commentNum = 0;
 
     @Enumerated(EnumType.STRING)
@@ -34,6 +37,7 @@ public class Post {
     private Date createdAt = new Date();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     User user;
 
     @Setter
