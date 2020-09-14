@@ -4,14 +4,15 @@ import com.example.myproject.model.dto.request.comment.CommentRequestDto;
 import com.example.myproject.model.entity.post.Post;
 import com.example.myproject.model.entity.user.User;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 public class Comment {
     @Id
@@ -20,8 +21,10 @@ public class Comment {
 
     String content;
 
+    @Setter
     int reCommentNum = 0;
 
+    @Setter
     Long groupNum;
 
     Boolean deleted = false;
@@ -47,12 +50,11 @@ public class Comment {
         this.user = user;
     }
 
-    public void updateComment(CommentRequestDto commentRequestDto)
-    {
+    public void updateComment(CommentRequestDto commentRequestDto) {
         this.content = commentRequestDto.getContent();
     }
-    public void deleteComment()
-    {
+
+    public void deleteComment() {
         this.deleted = true;
     }
 }

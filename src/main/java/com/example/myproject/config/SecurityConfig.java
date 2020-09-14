@@ -42,11 +42,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html",
                         "/webjars/**"
                 ).permitAll()
-                .antMatchers("/auth/**").permitAll() //authController 경로로 들어오는 것은 다 허용
+                .anyRequest().permitAll().and()
+                /*.antMatchers("/auth/**").permitAll() //authController 경로로 들어오는 것은 다 허용
                 .antMatchers("/user/**").hasAnyRole("USER", "GUEST")
                 .anyRequest().hasRole("USER")//그 외의 요청은 USER권한을 가진 사용자에게만 허용
                 .and()
+                */
                 .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+
 
     }
 }

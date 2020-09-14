@@ -3,10 +3,9 @@ package com.example.myproject.model.entity.post;
 import com.example.myproject.model.dto.request.post.PostRequestDto;
 import com.example.myproject.model.entity.user.User;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
 public class Post {
 
     @Id
@@ -37,7 +36,8 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     User user;
 
-    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
+    @Setter
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     List<Image> imageURL;
 
     @Builder
@@ -49,8 +49,7 @@ public class Post {
         this.user = user;
     }
 
-    public void updateMemo(PostRequestDto postRequestDto)
-    {
+    public void updateMemo(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
         this.type = postRequestDto.getType();
         this.content = postRequestDto.getContent();
