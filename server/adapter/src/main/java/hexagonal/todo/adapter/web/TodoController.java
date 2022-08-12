@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/todos")
-public class SampleController {
+public class TodoController {
 
   private final TodoUseCase todoUseCase;
 
@@ -55,7 +56,7 @@ public class SampleController {
     return new CommonResponse<>(null);
   }
 
-  @PutMapping("/{id}")
+  @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public CommonResponse<Void> deleteTodo(
       @PathVariable Long id

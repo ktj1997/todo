@@ -1,7 +1,0 @@
-rootProject.name = 'hexagonal-todo'
-
-include 'core'
-include 'adapter'
-include 'ports'
-include 'application'
-include 'domain'
