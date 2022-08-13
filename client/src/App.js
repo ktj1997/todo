@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Todo from "./Todo";
+import { useState } from "react";
 
-function App() {
+const App = () => {
+  const [todos, setTodos] = useState([
+    {
+      id: 1,
+      name: "공부하기",
+      isChecked: true
+    },
+    {
+      id: 2,
+      name: "운동하기",
+      isChecked: false
+    }
+  ]);
+  const onChangeTodoHandler = (index, newTodo) => {
+    setTodos((prevState) => {
+      let newTodos = [...prevState];
+      newTodos[index] = newTodo;
+      return newTodos;
+    });
+  };
+  const onDeleteTodoHandler = (index) => {
+    setTodos((prevState) => {
+      const newTodos = [...prevState];
+      newTodos.splice(index, 1);
+
+      return newTodos;
+    });
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="Container">
+        <div className="TodoBlock">
+          <div className="Title">
+            <h1>할 일 목록</h1>
+          </div>
+          {todos.map((todo, index) => (
+            <Todo
+              key={todo.id}
+              index={index}
+              data={todo}
+              onChangeTodo={onChangeTodoHandler}
+              onDeleteTodo={onDeleteTodoHandler}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
