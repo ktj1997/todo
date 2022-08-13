@@ -2,6 +2,7 @@ package hexagonal.todo.ports.in;
 
 import hexagonal.todo.ports.in.model.command.CreateTodoCommand;
 import hexagonal.todo.ports.in.model.command.UpdateTodoCommand;
+import hexagonal.todo.ports.in.model.info.TodoInfo;
 import hexagonal.todo.ports.in.model.query.GetTodoQuery;
 
 public interface TodoUseCase {
@@ -10,5 +11,7 @@ public interface TodoUseCase {
 
   void createTodo(CreateTodoCommand command);
 
-  void updateTodo(UpdateTodoCommand command);
+  TodoInfo updateTodo(UpdateTodoCommand command);
+
+  void deleteTodo(Long id);
 }

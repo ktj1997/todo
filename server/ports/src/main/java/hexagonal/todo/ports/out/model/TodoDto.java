@@ -1,11 +1,11 @@
-package hexagonal.todo.ports.in.model.command;
+package hexagonal.todo.ports.out.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UpdateTodoCommand {
+public class TodoDto {
 
   private Long id;
   private String name;
