@@ -5,10 +5,10 @@ import hexagonal.todo.domain.Todo;
 import hexagonal.todo.ports.in.TodoUseCase;
 import hexagonal.todo.ports.in.model.command.CreateTodoCommand;
 import hexagonal.todo.ports.in.model.command.UpdateTodoCommand;
-import hexagonal.todo.ports.in.model.info.TodoInfo;
+import hexagonal.todo.ports.in.model.info.TodoWebDto;
 import hexagonal.todo.ports.in.model.query.GetTodoQuery;
 import hexagonal.todo.ports.out.TodoPersistencePort;
-import hexagonal.todo.ports.out.model.TodoDto;
+import hexagonal.todo.ports.out.model.TodoPersistenceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,13 +27,22 @@ public class TodoService implements TodoUseCase {
   }
 
   @Override
-  public void createTodo(CreateTodoCommand command) {
-    todoPersistencePort.saveTodo();
+  public TodoWebDto createTodo(CreateTodoCommand command) {
+    TodoPersistenceDto persistenceDto = todoPersistencePort.saveTodo(
+        new TodoPersistenceDto(
+            null,
+            command.getName(),
+            false,
+            command.getPriority()
+        )
+    );
+
+    return todoModelMapper.persistenceDtoToWebDto(persistenceDto);
   }
 
   @Override
-  public TodoInfo updateTodo(UpdateTodoCommand command) {
-    TodoDto dto = todoPersistencePort.findTodoById(command.getId());
+  public TodoWebDto updateTodo(UpdateTodoCommand command) {
+    TodoPersistenceDto dto = todoPersistencePort.findTodoById(command.getId());
     Todo todo = todoModelMapper
         .dtoToModel(dto)
         .update(

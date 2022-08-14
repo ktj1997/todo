@@ -5,8 +5,9 @@ import hexagonal.todo.adapter.web.request.CreateTodoRequest;
 import hexagonal.todo.adapter.web.request.UpdateTodoRequest;
 import hexagonal.todo.adapter.web.response.CommonResponse;
 import hexagonal.todo.ports.in.TodoUseCase;
+import hexagonal.todo.ports.in.model.command.CreateTodoCommand;
 import hexagonal.todo.ports.in.model.command.UpdateTodoCommand;
-import hexagonal.todo.ports.in.model.info.TodoInfo;
+import hexagonal.todo.ports.in.model.info.TodoWebDto;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -41,17 +42,21 @@ public class TodoController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public CommonResponse<Void> createTodo(
+  public CommonResponse<TodoWebDto> createTodo(
       @RequestBody
       CreateTodoRequest req
   ) {
-
-    return new CommonResponse<>(null);
+    CreateTodoCommand command = new CreateTodoCommand(
+        req.getName(),
+        req.getPriority()
+    );
+    TodoWebDto dto = todoUseCase.createTodo(command);
+    return new CommonResponse<>(dto);
   }
 
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public CommonResponse<TodoInfo> updateTodo(
+  public CommonResponse<TodoWebDto> updateTodo(
       @PathVariable Long id,
       @RequestBody UpdateTodoRequest req
   ) {
@@ -62,8 +67,8 @@ public class TodoController {
         req.getPriority()
     );
 
-    TodoInfo todoInfo = todoUseCase.updateTodo(command);
-    return new CommonResponse<>(todoInfo);
+    TodoWebDto dto = todoUseCase.updateTodo(command);
+    return new CommonResponse<>(dto);
   }
 
   @DeleteMapping("/{id}")

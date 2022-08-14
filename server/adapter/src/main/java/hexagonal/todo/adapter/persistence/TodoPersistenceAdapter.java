@@ -5,7 +5,7 @@ import hexagonal.todo.adapter.persistence.mapper.TodoEntityMapper;
 import hexagonal.todo.adapter.persistence.model.TodoJpaEntity;
 import hexagonal.todo.adapter.persistence.repository.TodoJpaRepository;
 import hexagonal.todo.ports.out.TodoPersistencePort;
-import hexagonal.todo.ports.out.model.TodoDto;
+import hexagonal.todo.ports.out.model.TodoPersistenceDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,24 +18,27 @@ public class TodoPersistenceAdapter implements TodoPersistencePort {
   private final TodoJpaRepository todoJpaRepository;
 
   @Override
-  public TodoDto findTodoById(Long id) {
+  public TodoPersistenceDto findTodoById(Long id) {
     TodoJpaEntity todo = todoJpaRepository.findById(id).orElseThrow(IllegalAccessError::new);
     return todoEntityMapper.entityToDto(todo);
   }
 
   @Override
-  public List<TodoDto> findTodos() {
+  public List<TodoPersistenceDto> findTodos() {
     return null;
   }
 
   @Override
-  public TodoDto saveTodo() {
-    return null;
+  public TodoPersistenceDto saveTodo(TodoPersistenceDto dto) {
+    TodoJpaEntity entity = todoEntityMapper.dtoToEntity(dto);
+    todoJpaRepository.save(entity);
+
+    return todoEntityMapper.entityToDto(entity);
   }
 
   @Override
-  public TodoDto updateTodo(TodoDto dto) {
-    TodoJpaEntity entity = todoJpaRepository.save(todoEntityMapper.dtoToEntity(dto));
+  public TodoPersistenceDto updateTodo(TodoPersistenceDto dto) {
+    TodoJpaEntity entity = todoEntityMapper.dtoToEntity(dto);
     return todoEntityMapper.entityToDto(entity);
   }
 
