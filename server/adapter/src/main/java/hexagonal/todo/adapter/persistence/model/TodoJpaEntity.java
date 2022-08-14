@@ -1,5 +1,6 @@
 package hexagonal.todo.adapter.persistence.model;
 
+import hexagonal.todo.ports.out.model.TodoPersistenceDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "todo")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TodoJpaEntity extends BaseJpaEntity{
+public class TodoJpaEntity extends BaseJpaEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +31,12 @@ public class TodoJpaEntity extends BaseJpaEntity{
 
   @Column(nullable = false)
   private int priority;
+
+  public TodoJpaEntity update(String name, boolean checked, int priority) {
+    this.name = name;
+    this.checked = checked;
+    this.priority = priority;
+
+    return this;
+  }
 }

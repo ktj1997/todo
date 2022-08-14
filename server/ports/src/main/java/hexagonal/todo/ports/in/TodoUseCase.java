@@ -4,10 +4,11 @@ import hexagonal.todo.ports.in.model.command.CreateTodoCommand;
 import hexagonal.todo.ports.in.model.command.UpdateTodoCommand;
 import hexagonal.todo.ports.in.model.info.TodoWebDto;
 import hexagonal.todo.ports.in.model.query.GetTodoQuery;
+import java.util.List;
 
 public interface TodoUseCase {
 
-  void getTodos(GetTodoQuery query);
+  List<TodoWebDto> getTodos(GetTodoQuery query);
 
   TodoWebDto createTodo(CreateTodoCommand command);
 

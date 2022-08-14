@@ -11,5 +11,4 @@ public class TodoPersistenceDto {
   private String name;
   private boolean checked;
   private int priority;
-
 }

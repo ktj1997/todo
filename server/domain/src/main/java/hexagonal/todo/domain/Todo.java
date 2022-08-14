@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Todo {
 
+  private Long id;
   private String name;
   private int priority;
   private boolean checked;

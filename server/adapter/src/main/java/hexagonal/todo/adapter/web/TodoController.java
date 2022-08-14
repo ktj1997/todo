@@ -8,9 +8,12 @@ import hexagonal.todo.ports.in.TodoUseCase;
 import hexagonal.todo.ports.in.model.command.CreateTodoCommand;
 import hexagonal.todo.ports.in.model.command.UpdateTodoCommand;
 import hexagonal.todo.ports.in.model.info.TodoWebDto;
+import hexagonal.todo.ports.in.model.query.GetTodoQuery;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,12 +35,16 @@ public class TodoController {
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public CommonResponse<Void> getTodo(
+  public CommonResponse<List<TodoWebDto>> getTodo(
       @RequestParam
-      @DateTimeFormat(pattern = "yyyy-mm-dd")
+      @DateTimeFormat(iso = ISO.DATE)
       LocalDate date
   ) {
-    return new CommonResponse<>(null);
+    GetTodoQuery query = new GetTodoQuery(
+        date
+    );
+    List<TodoWebDto> todos = todoUseCase.getTodos(query);
+    return new CommonResponse<>(todos);
   }
 
   @PostMapping
