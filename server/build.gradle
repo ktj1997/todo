@@ -42,8 +42,8 @@ subprojects {
 
 }
 
-project(":core"){
-    dependencies{
+project(":core") {
+    dependencies {
         implementation(project(":ports"))
         implementation(project(":adapter"))
         implementation(project(":application"))
@@ -58,11 +58,13 @@ project(":ports") {
 }
 
 project(":adapter") {
-    dependencies{
+    dependencies {
         implementation(project(":ports"))
 
         runtimeOnly 'com.h2database:h2'
         runtimeOnly 'mysql:mysql-connector-java'
+
+        implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
