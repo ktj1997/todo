@@ -58,7 +58,7 @@ public class TodoPersistenceAdapter implements TodoPersistencePort {
   }
 
   @Override
-  public void deleteTodo() {
-
+  public void deleteTodo(Long id) {
+    todoJpaRepository.deleteById(id);
   }
 }

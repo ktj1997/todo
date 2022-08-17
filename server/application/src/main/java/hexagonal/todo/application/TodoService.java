@@ -25,6 +25,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @Transactional
 @RequiredArgsConstructor
 public class TodoService implements TodoUseCase {
+
   private final TodoPersistencePort todoPersistencePort;
   private final TodoModelMapper todoModelMapper;
 
@@ -75,6 +76,6 @@ public class TodoService implements TodoUseCase {
 
   @Override
   public void deleteTodo(Long id) {
-    todoPersistencePort.deleteTodo();
+    todoPersistencePort.deleteTodo(id);
   }
 }

@@ -83,6 +83,7 @@ public class TodoController {
   public CommonResponse<Void> deleteTodo(
       @PathVariable Long id
   ) {
-    return new CommonResponse<>(null);
+    todoUseCase.deleteTodo(id);
+    return new CommonResponse<>();
   }
 }

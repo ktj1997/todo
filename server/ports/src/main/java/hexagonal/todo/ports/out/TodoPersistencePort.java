@@ -14,6 +14,5 @@ public interface TodoPersistencePort {
 
   TodoPersistenceDto updateTodo(TodoPersistenceDto dto);
 
-  void deleteTodo();
-
+  void deleteTodo(Long id);
 }
