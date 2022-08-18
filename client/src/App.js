@@ -1,51 +1,33 @@
 import "./App.css";
-import Todo from "./Todo";
-import { useState } from "react";
+import TodoList from "./components/TodoList";
+import Form from "./components/Form";
+import { useState, useEffect } from "react";
+import { fetchTodoList } from "./libs/apis/TodoApi";
+import { parseToDateFormat } from "./libs/utils/DateUtils";
 
 const App = () => {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      name: "공부하기",
-      isChecked: true
-    },
-    {
-      id: 2,
-      name: "운동하기",
-      isChecked: false
-    }
-  ]);
-  const onChangeTodoHandler = (index, newTodo) => {
-    setTodos((prevState) => {
-      let newTodos = [...prevState];
-      newTodos[index] = newTodo;
-      return newTodos;
-    });
-  };
-  const onDeleteTodoHandler = (index) => {
-    setTodos((prevState) => {
-      const newTodos = [...prevState];
-      newTodos.splice(index, 1);
+  const [todos, setTodos] = useState([]);
 
-      return newTodos;
-    });
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const getList = async () => {
+    const date = parseToDateFormat(new Date());
+    const res = await fetchTodoList("2022-08-14");
+    console.log(res);
+    setTodos(res.data.data);
   };
+
   return (
     <div className="App">
-      <div className="Container">
-        <div className="TodoBlock">
-          <div className="Title">
+      <div className="flex items-center justify-center h-screen bg-blue-50">
+        <div className="w-full p-6 m-4 bg-white rounded shadow md:w-3/4 md:max-w-lg lg:w-3/5 lg:max-w-lg">
+          <div className="flex justify-between mb-3">
             <h1>할 일 목록</h1>
           </div>
-          {todos.map((todo, index) => (
-            <Todo
-              key={todo.id}
-              index={index}
-              data={todo}
-              onChangeTodo={onChangeTodoHandler}
-              onDeleteTodo={onDeleteTodoHandler}
-            />
-          ))}
+          <TodoList setTodos={setTodos} todos={todos} />
+          <Form setTodos={setTodos} />
         </div>
       </div>
     </div>
