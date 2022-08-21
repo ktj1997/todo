@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { saveTodo } from "../libs/apis/TodoApi";
 
 const Form = (props) => {
-  const { setTodos } = props;
+  const { setTodos, nextSequence } = props;
 
   const [input, setInput] = useState("");
   const onChangeInputHandler = (e) => {
@@ -9,13 +10,18 @@ const Form = (props) => {
   };
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const newInput = {
+    const request = {
       name: input,
       isChecked: false,
-      id: 5
+      priority: nextSequence
     };
-    setTodos((prevState) => [...prevState, newInput]);
+    callSaveTodoApi(request);
     setInput("");
+  };
+
+  const callSaveTodoApi = async (body) => {
+    const response = await saveTodo(body);
+    setTodos((prevState) => [...prevState, response.data.data]);
   };
   return (
     <>

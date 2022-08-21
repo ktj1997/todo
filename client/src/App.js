@@ -9,14 +9,13 @@ const App = () => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    getList();
+    fetchList();
   }, []);
 
-  const getList = async () => {
+  const fetchList = async () => {
     const date = parseToDateFormat(new Date());
-    const res = await fetchTodoList("2022-08-14");
-    console.log(res);
-    setTodos(res.data.data);
+    const response = await fetchTodoList(date);
+    setTodos(response.data.data);
   };
 
   return (
@@ -27,7 +26,7 @@ const App = () => {
             <h1>할 일 목록</h1>
           </div>
           <TodoList setTodos={setTodos} todos={todos} />
-          <Form setTodos={setTodos} />
+          <Form setTodos={setTodos} nextSequence={todos.length + 1} />
         </div>
       </div>
     </div>

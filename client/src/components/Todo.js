@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Todo = (props) => {
   const { index, data, onChangeTodo, onDeleteTodo } = props;
