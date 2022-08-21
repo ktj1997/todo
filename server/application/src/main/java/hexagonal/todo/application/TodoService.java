@@ -9,6 +9,7 @@ import hexagonal.todo.ports.in.model.info.TodoWebDto;
 import hexagonal.todo.ports.in.model.query.GetTodoQuery;
 import hexagonal.todo.ports.out.TodoPersistencePort;
 import hexagonal.todo.ports.out.model.TodoPersistenceDto;
+import java.beans.PersistenceDelegate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Slf4j
 @Service
@@ -59,19 +59,18 @@ public class TodoService implements TodoUseCase {
   }
 
   @Override
-  public TodoWebDto updateTodo(UpdateTodoCommand command) {
-    log.info("In Service :{}", TransactionSynchronizationManager.getCurrentTransactionName());
-    TodoPersistenceDto dto = todoPersistencePort.findTodoById(command.getId());
-    Todo todo = todoModelMapper
-        .dtoToModel(dto)
-        .update(
-            command.getName(),
-            command.getPriority(),
-            command.isChecked()
-        );
+  public List<TodoWebDto> updateTodo(UpdateTodoCommand command) {
+    List<TodoWebDto> todoWebDtos = command.getTodos();
+    List<Todo> todos = todoWebDtos.stream()
+        .map(todoModelMapper::webDtoToModel)
+        .collect(Collectors.toList());
 
-    dto = todoPersistencePort.updateTodo(todoModelMapper.modelToPersistenceDto(todo));
-    return todoModelMapper.persistenceDtoToWebDto(dto);
+
+    List<TodoPersistenceDto> todoPersistenceDtos = todos.stream()
+        .map(todoModelMapper::modelToPersistenceDto).collect(Collectors.toList());
+
+        todoPersistenceDtos = todoPersistencePort.updateTodo((todoPersistenceDtos));
+    return todoPersistenceDtos.stream().map(todoModelMapper::persistenceDtoToWebDto).collect(Collectors.toList());
   }
 
   @Override

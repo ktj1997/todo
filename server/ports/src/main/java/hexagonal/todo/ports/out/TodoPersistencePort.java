@@ -12,7 +12,7 @@ public interface TodoPersistencePort {
 
   TodoPersistenceDto saveTodo(TodoPersistenceDto todoPersistenceDto);
 
-  TodoPersistenceDto updateTodo(TodoPersistenceDto dto);
+  List<TodoPersistenceDto> updateTodo(List<TodoPersistenceDto> dtos);
 
   void deleteTodo(Long id);
 }

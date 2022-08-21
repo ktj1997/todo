@@ -8,8 +8,9 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface TodoModelMapper {
 
-  Todo dtoToModel(TodoPersistenceDto dto);
+  Todo persistenceDtoToModel(TodoPersistenceDto dto);
 
+  Todo webDtoToModel(TodoWebDto dto);
   TodoPersistenceDto modelToPersistenceDto(Todo model);
 
   TodoWebDto modelToWebDto(Todo model);

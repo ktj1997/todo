@@ -61,21 +61,20 @@ public class TodoController {
     return new CommonResponse<>(dto);
   }
 
-  @PutMapping("/{id}")
+  @PutMapping
   @ResponseStatus(HttpStatus.OK)
-  public CommonResponse<TodoWebDto> updateTodo(
-      @PathVariable Long id,
+  public CommonResponse<List<TodoWebDto>> updateTodo(
+      @RequestParam
+      @DateTimeFormat(iso = ISO.DATE)
+      LocalDate date,
       @RequestBody UpdateTodoRequest req
   ) {
     UpdateTodoCommand command = new UpdateTodoCommand(
-        id,
-        req.getName(),
-        req.isChecked(),
-        req.getPriority()
+        req.getTodos()
     );
 
-    TodoWebDto dto = todoUseCase.updateTodo(command);
-    return new CommonResponse<>(dto);
+    List<TodoWebDto> dtos = todoUseCase.updateTodo(command);
+    return new CommonResponse<>(dtos);
   }
 
   @DeleteMapping("/{id}")

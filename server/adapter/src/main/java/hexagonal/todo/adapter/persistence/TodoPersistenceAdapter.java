@@ -51,10 +51,10 @@ public class TodoPersistenceAdapter implements TodoPersistencePort {
   }
 
   @Override
-  public TodoPersistenceDto updateTodo(TodoPersistenceDto dto) {
-    TodoJpaEntity entity = todoEntityMapper.dtoToEntity(dto);
-    todoJpaRepository.save(entity);
-    return todoEntityMapper.entityToDto(entity);
+  public List<TodoPersistenceDto> updateTodo(List<TodoPersistenceDto> dtos) {
+    List<TodoJpaEntity> entities = dtos.stream().map(todoEntityMapper::dtoToEntity).collect(Collectors.toList());
+    todoJpaRepository.saveAll(entities);
+    return entities.stream().map(todoEntityMapper::entityToDto).collect(Collectors.toList());
   }
 
   @Override

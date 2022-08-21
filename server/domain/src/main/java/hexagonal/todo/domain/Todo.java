@@ -11,12 +11,4 @@ public class Todo {
   private String name;
   private int priority;
   private boolean checked;
-
-  public Todo update(String name, int priority, boolean checked) {
-    this.name = name;
-    this.priority = priority;
-    this.checked = checked;
-
-    return this;
-  }
 }
