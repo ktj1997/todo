@@ -12,7 +12,9 @@ public interface TodoUseCase {
 
   TodoWebDto createTodo(CreateTodoCommand command);
 
-  List<TodoWebDto> updateTodo(UpdateTodoCommand command);
+  TodoWebDto updateTodo(Long id, UpdateTodoCommand command);
+
+  List<TodoWebDto> updateTodos(UpdateTodoCommand command);
 
   void deleteTodo(Long id);
 }

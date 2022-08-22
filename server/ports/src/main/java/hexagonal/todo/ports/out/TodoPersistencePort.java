@@ -3,6 +3,7 @@ package hexagonal.todo.ports.out;
 import hexagonal.todo.ports.out.model.TodoPersistenceDto;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface TodoPersistencePort {
 
@@ -12,7 +13,9 @@ public interface TodoPersistencePort {
 
   TodoPersistenceDto saveTodo(TodoPersistenceDto todoPersistenceDto);
 
-  List<TodoPersistenceDto> updateTodo(List<TodoPersistenceDto> dtos);
+  TodoPersistenceDto updateTodo(Long id, TodoPersistenceDto dto);
+
+  List<TodoPersistenceDto> updateTodos(Map<Long, TodoPersistenceDto> dtos);
 
   void deleteTodo(Long id);
 }

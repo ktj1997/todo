@@ -8,14 +8,13 @@ import hexagonal.todo.ports.out.TodoPersistencePort;
 import hexagonal.todo.ports.out.model.TodoPersistenceDto;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.metamodel.EntityType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Slf4j
 @Component
@@ -25,8 +24,6 @@ public class TodoPersistenceAdapter implements TodoPersistencePort {
 
   private final TodoEntityMapper todoEntityMapper;
   private final TodoJpaRepository todoJpaRepository;
-
-  private final EntityManager em;
 
   @Override
   public TodoPersistenceDto findTodoById(Long id) {
@@ -51,9 +48,32 @@ public class TodoPersistenceAdapter implements TodoPersistencePort {
   }
 
   @Override
-  public List<TodoPersistenceDto> updateTodo(List<TodoPersistenceDto> dtos) {
-    List<TodoJpaEntity> entities = dtos.stream().map(todoEntityMapper::dtoToEntity).collect(Collectors.toList());
-    todoJpaRepository.saveAll(entities);
+  public TodoPersistenceDto updateTodo(Long id, TodoPersistenceDto dto) {
+    TodoJpaEntity entity = todoJpaRepository.findById(id).orElseThrow(IllegalStateException::new);
+    entity.update(
+        dto.getName(),
+        dto.isChecked(),
+        dto.getPriority()
+    );
+    return todoEntityMapper.entityToDto(entity);
+  }
+
+  @Override
+  public List<TodoPersistenceDto> updateTodos(Map<Long, TodoPersistenceDto> dtos) {
+    Set<Long> ids = dtos.keySet();
+    List<TodoJpaEntity> entities =
+        todoJpaRepository.findAllByIdIn(ids)
+            .stream().map(
+                entity -> {
+                  TodoPersistenceDto dto = dtos.get(entity.getId());
+                  return entity.update(
+                      dto.getName(),
+                      dto.isChecked(),
+                      dto.getPriority()
+                  );
+                }
+            ).collect(Collectors.toList());
+
     return entities.stream().map(todoEntityMapper::entityToDto).collect(Collectors.toList());
   }
 

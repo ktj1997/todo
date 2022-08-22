@@ -9,11 +9,12 @@ import hexagonal.todo.ports.in.model.info.TodoWebDto;
 import hexagonal.todo.ports.in.model.query.GetTodoQuery;
 import hexagonal.todo.ports.out.TodoPersistencePort;
 import hexagonal.todo.ports.out.model.TodoPersistenceDto;
-import java.beans.PersistenceDelegate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,18 +60,27 @@ public class TodoService implements TodoUseCase {
   }
 
   @Override
-  public List<TodoWebDto> updateTodo(UpdateTodoCommand command) {
+  public TodoWebDto updateTodo(Long id, UpdateTodoCommand command) {
+    TodoWebDto webDto = command.getTodos().get(0);
+    Todo todo = todoModelMapper.webDtoToModel(webDto);
+
+    TodoPersistenceDto persistenceDto = todoPersistencePort.updateTodo(id,
+        todoModelMapper.modelToPersistenceDto(todo));
+
+    return todoModelMapper.persistenceDtoToWebDto(persistenceDto);
+  }
+
+  @Override
+  public List<TodoWebDto> updateTodos(UpdateTodoCommand command) {
     List<TodoWebDto> todoWebDtos = command.getTodos();
-    List<Todo> todos = todoWebDtos.stream()
+    Map<Long, TodoPersistenceDto> todoPersistenceDtos = todoWebDtos.stream()
         .map(todoModelMapper::webDtoToModel)
+        .map(todoModelMapper::modelToPersistenceDto)
+        .collect(Collectors.toMap(TodoPersistenceDto::getId, Function.identity()));
+
+    return todoPersistencePort.updateTodos((todoPersistenceDtos))
+        .stream().map(todoModelMapper::persistenceDtoToWebDto)
         .collect(Collectors.toList());
-
-
-    List<TodoPersistenceDto> todoPersistenceDtos = todos.stream()
-        .map(todoModelMapper::modelToPersistenceDto).collect(Collectors.toList());
-
-        todoPersistenceDtos = todoPersistencePort.updateTodo((todoPersistenceDtos));
-    return todoPersistenceDtos.stream().map(todoModelMapper::persistenceDtoToWebDto).collect(Collectors.toList());
   }
 
   @Override

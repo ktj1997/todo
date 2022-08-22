@@ -61,9 +61,22 @@ public class TodoController {
     return new CommonResponse<>(dto);
   }
 
+
+  @PutMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public CommonResponse<TodoWebDto> updateTodo(
+      @PathVariable Long id,
+      @RequestBody UpdateTodoRequest req
+  ) {
+    UpdateTodoCommand command = new UpdateTodoCommand(req.getTodos());
+    TodoWebDto dto = todoUseCase.updateTodo(id, command);
+
+    return new CommonResponse<>(dto);
+  }
+
   @PutMapping
   @ResponseStatus(HttpStatus.OK)
-  public CommonResponse<List<TodoWebDto>> updateTodo(
+  public CommonResponse<List<TodoWebDto>> updateTodos(
       @RequestParam
       @DateTimeFormat(iso = ISO.DATE)
       LocalDate date,
@@ -73,7 +86,7 @@ public class TodoController {
         req.getTodos()
     );
 
-    List<TodoWebDto> dtos = todoUseCase.updateTodo(command);
+    List<TodoWebDto> dtos = todoUseCase.updateTodos(command);
     return new CommonResponse<>(dtos);
   }
 
