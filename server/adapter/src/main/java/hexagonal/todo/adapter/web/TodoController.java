@@ -9,6 +9,7 @@ import hexagonal.todo.ports.in.model.command.CreateTodoCommand;
 import hexagonal.todo.ports.in.model.command.UpdateTodoCommand;
 import hexagonal.todo.ports.in.model.info.TodoWebDto;
 import hexagonal.todo.ports.in.model.query.GetTodoQuery;
+import io.swagger.annotations.ApiOperation;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class TodoController {
   private final TodoUseCase todoUseCase;
 
   @GetMapping
+  @ApiOperation("TodoList 조회")
   @ResponseStatus(HttpStatus.OK)
   public CommonResponse<List<TodoWebDto>> getTodo(
       @RequestParam
@@ -48,6 +50,7 @@ public class TodoController {
   }
 
   @PostMapping
+  @ApiOperation("Todo 생성")
   @ResponseStatus(HttpStatus.CREATED)
   public CommonResponse<TodoWebDto> createTodo(
       @RequestBody
@@ -63,6 +66,7 @@ public class TodoController {
 
 
   @PutMapping("/{id}")
+  @ApiOperation("Todo 단건 수정")
   @ResponseStatus(HttpStatus.OK)
   public CommonResponse<TodoWebDto> updateTodo(
       @PathVariable Long id,
@@ -75,6 +79,7 @@ public class TodoController {
   }
 
   @PutMapping
+  @ApiOperation("TodoList 수정")
   @ResponseStatus(HttpStatus.OK)
   public CommonResponse<List<TodoWebDto>> updateTodos(
       @RequestParam
@@ -91,6 +96,7 @@ public class TodoController {
   }
 
   @DeleteMapping("/{id}")
+  @ApiOperation("Todo 삭제")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public CommonResponse<Void> deleteTodo(
       @PathVariable Long id
